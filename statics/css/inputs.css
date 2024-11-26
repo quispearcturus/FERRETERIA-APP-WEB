@@ -1,0 +1,59 @@
+.mdl-textfield__input.mx-password {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 38px;
+}
+
+.toggle-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-64%);
+    outline: none;
+    color: #ffffff;
+}
+
+.mdl-textfield__input {
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.mdl-textfield__label {
+    bottom: 0;
+    color: rgb(179, 179, 179);
+
+}
+
+
+.mdl-textfield--floating-label.is-focused .mdl-textfield__label,
+.mdl-textfield--floating-label.is-dirty .mdl-textfield__label,
+.mdl-textfield--floating-label.has-placeholder .mdl-textfield__label {
+    color: #1f5aff;
+}
+
+
+.mdl-textfield__label:after {
+    background-color: #1f5aff;
+}
+
+
+
+
+
+
+fieldset[disabled] .mdl-textfield .mdl-textfield__input,
+.mdl-textfield.is-disabled .mdl-textfield__input {
+    background-color: transparent;
+    border-bottom: 1px dotted rgb(111, 110, 110);
+    color: rgba(111, 110, 110, 110);
+}
+
+
+fieldset[disabled] .mdl-textfield .mdl-textfield__label,
+.mdl-textfield.is-disabled.is-disabled .mdl-textfield__label {
+  color: rgba(111, 110, 110, 110); 
+}

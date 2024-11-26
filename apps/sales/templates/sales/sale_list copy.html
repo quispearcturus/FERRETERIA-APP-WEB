@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Armfy - Sales
+{% endblock %}
+
+{% block style %}
+  <style>
+  </style>
+{% endblock %}
+
+{% block barname %}
+  Sales
+{% endblock %}
+{% block content %}
+<form id="search-form" method="GET">
+  <input type="text" id="search-input" name="search" placeholder="Buscar evento" autocomplete="off" />
+</form>
+
+<ul id="event-list" style="background-color: white;">
+  {% for evento in sale_list %}
+      <li>{{ evento.customer }}</li>
+  {% empty %}
+      <li>No sales found</li>
+  {% endfor %}
+</ul>
+{{ obj_table }}
+{% endblock %}
+
+{% block script %}
+  <script>
+    document.getElementById('search-input').addEventListener('input', function() {
+      const query = this.value;  // Obtenemos el valor del campo de búsqueda
+
+      // Realizamos la solicitud usando la API fetch
+      fetch(`{% url 'sales:sale_list' %}?search=${query}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest',
+          }
+      })
+      .then(response => response.json())  // Esperamos la respuesta en formato JSON
+      .then(data => {
+          let eventList = document.getElementById('event-list');
+
+          console.log(data)
+          eventList.innerHTML = '';  // Limpiamos la lista actual
+
+          if (data.sale_list.length > 0) {
+              // Si hay resultados, los mostramos
+              console.log('go')
+              data.sale_list.forEach(evento => {
+                  const li = document.createElement('li');
+                  li.textContent = evento.customer;
+                  eventList.appendChild(li);
+              });
+          } else {
+              // Si no hay resultados, mostramos un mensaje
+              const li = document.createElement('li');
+              li.textContent = 'No sales found';
+              eventList.appendChild(li);
+          }
+      })
+      .catch(error => {
+        console.log(error)
+          //console.error('Error al obtener los eventos:', error);
+      });
+  });
+  </script>
+{% endblock %}

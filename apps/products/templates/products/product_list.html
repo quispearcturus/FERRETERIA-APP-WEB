@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Armfy
+{% endblock %}
+
+{% block style %}
+  <style>
+    .fab-button {
+      position: fixed;
+      bottom: 50px; /* Distancia desde el fondo */
+      right: 20px; /* Distancia desde la derecha */
+      z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    }
+    
+  </style>
+{% endblock %}
+{% block barname %}
+  Products All
+{% endblock %}
+{% block content %}
+  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored fab-button waves-effect waves-light" onclick="location.href='{% url 'products:product_create' %}'">
+    <i class="material-icons">add</i>
+  </button>
+  <div class="mx-card mdl-shadow--4dp  mdl-cell mdl-cell--12-col mdl-grid">
+    <table class="mdl-data-table mdl-js-data-table">
+      <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">Product</th>
+          <th>Category</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products_list %}
+          <tr>
+            <td class="mdl-data-table__cell--non-numeric">{{ product }}</td>
+            <td>edit / delete</td>
+            <td>edit / delete</td>
+            <td>
+              {% comment %} <form action="{% url 'products:product_edit' product.id %}" method="get"> {% endcomment %}
+                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='{% url 'products:product_edit' product.id %}'"><i class="material-icons">edit</i></button>
+              {% comment %} </form> {% endcomment %}
+              <button class="mdl-button mdl-js-button mdl-button--icon open-modal" data-product-id="{{ product.id }}" data-micromodal-trigger="modal-{{ product.id }}"><i class="material-icons open-modal" data-product-id="{{ product.id }}" data-micromodal-trigger="modal-{{ product.id }}">details</i></button>
+            </td>
+          </tr>
+
+          <div class="modal micromodal-slide overlay" id="modal-{{ product.id }}" aria-hidden="true">
+            <div class="modal__overlay">
+              <div class="modal__container">
+                <header class="modal__header">
+                  <span>Detail Product</span>
+                </header>
+                <div class="modal__content" id="modal-content-{{ product.id }}"></div>
+                <footer class="modal__footer">
+                  <button class="modal__close mdl-button mdl-js-button mx-button-accent waves-effect waves-light" data-micromodal-close>Close</button>
+                  <button class="mdl-button mdl-js-button mx-button-primary waves-effect waves-light">Save</button>
+                </footer>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if is_paginated %}
+      <div class="mx-pagination">
+        <span class="mx-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="firts-link" data-url="?page=1"><i class="material-icons">first_page</i></button>
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="left-link" data-url="?page={{ page_obj.previous_page_number }}"><i class="material-icons">keyboard_arrow_left</i></button>
+          {% else %}
+            <button class="mdl-button mdl-js-button mdl-button--icon" disabled><i class="material-icons">first_page</i></button>
+            <button class="mdl-button mdl-js-button mdl-button--icon" disabled><i class="material-icons">keyboard_arrow_left</i></button>
+          {% endif %}
+          {% if page_obj.has_next %}
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="right-link" data-url="?page={{ page_obj.next_page_number }}"><i class="material-icons">keyboard_arrow_right</i></button>
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="last-link" data-url="?page={{ page_obj.paginator.num_pages }}"><i class="material-icons">last_page</i></button>
+          {% else %}
+            <button class="mdl-button mdl-js-button mdl-button--icon" disabled><i class="material-icons">keyboard_arrow_right</i></button>
+            <button class="mdl-button mdl-js-button mdl-button--icon" disabled><i class="material-icons">last_page</i></button>
+          {% endif %}
+        </span>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="modal micromodal-slide overlay" id="modal-1" aria-hidden="true">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Título del Modal</h2>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-content">
+        <p>Este es el contenido del modal.</p>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn" data-micromodal-close>Cerrar</button>
+        <button data-custom-close="modal-1">close</button>
+      </footer>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    redirectUrl('firts-link')
+    redirectUrl('left-link')
+    redirectUrl('right-link')
+    redirectUrl('last-link')
+    
+    function createItem(icon, data) {
+      const item_data = document.createElement('li')
+      item_data.classList.add('mdl-list__item')
+      const span_data = document.createElement('span')
+      span_data.classList.add('mdl-list__item-primary-content')
+      const icon_data = document.createElement('icon')
+      icon_data.classList.add('material-icons', 'mdl-list__item-icon')
+    
+      icon_data.textContent = icon
+      const text_data = document.createTextNode(data)
+    
+      item_data.appendChild(span_data)
+      span_data.appendChild(icon_data)
+      span_data.appendChild(text_data)
+      return item_data
+    }
+    document.addEventListener('click', function (event) {
+      if (event.target.matches('.open-modal')) {
+        const productId = event.target.dataset.productId
+    
+        // Realiza una solicitud AJAX para obtener los detalles del producto
+        fetch(`/product/${productId}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            // Inserta los datos en el modal
+            const modalContent = document.getElementById(`modal-content-${productId}`)
+            const list_data = document.createElement('ul')
+            list_data.classList.add('mdl-list')
+            const item_id = createItem('developer_board', data.id)
+            list_data.appendChild(item_id)
+            const item_data = createItem('person', data.datar)
+            list_data.appendChild(item_data)
+    
+            const htmlString = list_data.outerHTML
+            modalContent.innerHTML = htmlString
+          })
+          .catch((error) => console.error('Error:', error))
+      }
+    })
+    document.addEventListener('.close__modal', function (event) {
+      const modalId = event.detail.modal.id
+      console.log(`Modal cerrado: ${modalId}`)
+    })
+  </script>
+{% endblock %}

@@ -1,0 +1,17 @@
+MATERIAL LITE
+https://getmdl.io/components/index.html
+https://github.com/material-components/material-web/blob/main/docs/intro.md
+
+VIEWFLOW
+https://demo.viewflow.io/intro/
+
+WAVES
+https://fians.github.io/Waves/#examples
+
+DATEPICKERS
+https://codepen.io/kucsatax/pen/OVLjEZ
+https://codepen.io/ahmetcadirci/pen/NpMNzJ
+
+
+LOAD NUMBERS
+https://codepen.io/shubhamc_007/pen/ZBXvWK

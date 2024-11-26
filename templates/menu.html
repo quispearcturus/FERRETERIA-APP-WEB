@@ -1,0 +1,34 @@
+{% load static %}
+<div class="demo-drawer mdl-layout__drawer mdl-layout--no-desktop-drawer-button mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+    <header class="demo-drawer-header">
+        <img src="{% static 'img/user.png' %}" class="demo-avatar">
+        <div class="demo-avatar-dropdown">
+            <span>{{ request.user.email }}</span>
+            <div class="mdl-layout-spacer"></div>
+            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                <i class="material-icons" role="presentation">arrow_drop_down</i>
+                <span class="visuallyhidden">Accounts</span>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect mx-menu" for="accbtn">
+                <li class="mdl-menu__item"><i class="material-icons mx-item-icon">person</i>Profile User</li>
+                <li class="mdl-menu__item" data-url="{% url 'auths:change_password' %}" id="change_password"><i class="material-icons mx-item-icon">vpn_key</i>Change Password</li>
+                <li class="mdl-menu__item" data-url="{% url 'auths:logout' %}" id="logout"><i class="material-icons mx-item-icon">exit_to_app</i>Logout</li>
+            </ul>
+        </div>
+    </header>
+    <nav class="mx-navigation mdl-navigation mx-nav">
+        <a class="mdl-navigation__link waves-effect waves-light {% if menu_active == 'dashboard' %}mx-active-menu{% endif %}" href="{% url 'products:product_count'%}#"><i class="material-icons" role="presentation">dashboard</i>Dashboard</a>
+        <a class="mdl-navigation__link waves-effect waves-light {% if menu_active == 'products' %}mx-active-menu{% endif %}" href="{% url 'products:product_list'%}"><i class="material-icons" role="presentation">menu</i>Products</a>
+        <a class="mdl-navigation__link waves-effect waves-light {% if menu_active == 'sales' %}mx-active-menu{% endif %}" href="{% url 'sales:sale_list'%}"><i class="material-icons" role="presentation">shopping_cart</i>Sales</a>
+        <a class="mdl-navigation__link waves-effect waves-light {% if menu_active == '2' %}mx-active-menu{% endif %}" href="#"><i class="material-icons" role="presentation">report</i>Spam</a>
+        <a class="mdl-navigation__link waves-effect waves-light {% if menu_active == '3' %}mx-active-menu{% endif %}" href="#"><i class="material-icons" role="presentation">forum</i>Forums</a>
+        <a class="mdl-navigation__link waves-effect waves-light {% if menu_active == '4' %}mx-active-menu{% endif %}" href="#"><i class="material-icons" role="presentation">flag</i>Updates</a>
+        <a class="mdl-navigation__link waves-effect waves-light" href="#"><i class="material-icons" role="presentation">local_offer</i>Promos</a>
+        <a class="mdl-navigation__link waves-effect waves-light" href="#"><i class="material-icons" role="presentation">shopping_cart</i>Purchases</a>
+        <a class="mdl-navigation__link waves-effect waves-light" href="#"><i class="material-icons" role="presentation">people</i>Social</a>
+        <a class="mdl-navigation__link waves-effect waves-light" href="#"><i class="material-icons" role="presentation">people</i>Social</a>
+        <a class="mdl-navigation__link waves-effect waves-light" href="#"><i class="material-icons" role="presentation">people</i>Social</a>
+        <a class="mdl-navigation__link waves-effect waves-light" href="#"><i class="material-icons" role="presentation">people</i>Social</a>
+        <div class="mdl-layout-spacer"></div>
+    </nav>
+</div>

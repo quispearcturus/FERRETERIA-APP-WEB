@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Armfy
+{% endblock %}
+
+{% block style %}
+<style>
+  input:focus-visible {
+    outline: none;
+}
+  .mx-input-table {
+    width: 50px;
+    padding: 0px 0 !important;
+  }
+  .floating-list {
+    position: absolute;
+    z-index: 999;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: aliceblue;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+</style>
+{% endblock %}
+{% block barname %}
+{% if is_editing %}Editar{% else %}Crear{% endif %} Venta
+{% endblock %}
+{% block content %}
+
+<div class="mx-card mdl-shadow--4dp mdl-cell mdl-cell--12-col mdl-grid">
+  <a href="{% url 'sales:sale_list' %}">Volver a la lista</a>
+  {% if is_editing %}{%else%}
+  <form method="get" id="type_voucher-form">
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+      <input type="text" value="" class="mdl-textfield__input" id="type_voucher" readonly>
+      <input type="hidden" value="" name="type_voucher" id="hidden_type_voucher">
+      <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+      <label for="type_voucher" class="mdl-textfield__label">Type Voucher</label>
+      <ul for="type_voucher" class="mdl-menu mdl-menu--bottom-left mdl-js-menu" onclick="typeProSubmit(this)">
+        {% for tv in type_vouchers %}
+          <li class="mdl-menu__item" data-val="{{ tv.id }}">{{ tv.type_voucher }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </form>
+  {% endif %}
+<div style="display: flex;">
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" id="id_serie" name="serie" disabled value="{{ serial }}">
+    <label class="mdl-textfield__label" for="id_serie">Serie</label>
+  </div>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" id="id_number" name="number" disabled value="{{ numeration }}">
+    <label class="mdl-textfield__label" for="id_number">Number</label>
+  </div>
+</div>
+  <form method="post" id="obj_form">
+    {% csrf_token %}
+    {{ obj_form.as_p }}
+    <input type="hidden" id="datos" name="datos" value="">
+    <button type="submit" onclick="agregarDatosExtra()">{% if is_editing %}Actualizar{% else %}Gen Sale{% endif %}</button>
+  </form>
+
+</div>
+<div class="mx-card mdl-shadow--4dp mdl-cell mdl-cell--12-col mdl-grid">
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <input class="mdl-textfield__input" type="text" id="description" name="add" autocomplete="off">
+  <label class="mdl-textfield__label" for="description">Add Product</label>
+</div>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="etable">
+  <thead>
+    <tr>
+      <th>N°</th>
+      <th>Description</th>
+      <th>Cant</th>
+      <th>P.Unit</th>
+      <th>Sub Total</th>
+      <th>Option</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4">Total</td>
+      <td>--</td>
+      <td>
+        
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  function getDetail() {
+    var datos = [];
+    var filas = document.getElementById('etable').getElementsByTagName('tbody')[0].rows;
+    console.log(filas);
+    for (var i = 0; i < filas.length; i++){
+      var id_pro = filas[i].cells[0].getAttribute('data-id');
+      var quantity = filas[i].cells[2].querySelector('input').value;
+      var unit_price = filas[i].cells[3].querySelector('input').value;
+      datos.push({'id': id_pro, 'quantity': quantity, 'unit_price': unit_price});
+    }
+    return JSON.stringify(datos)
+
+
+  }
+  function agregarDatosExtra() {
+    // Modifica el valor del campo oculto antes de enviar el formulario
+    document.getElementById('datos').value = getDetail();
+}
+  function calTotal(){
+    var suma = 0;
+    var filas = document.getElementById('etable').getElementsByTagName('tbody')[0].rows;
+    for (var i = 0; i < filas.length; i++){
+      var subtotal = filas[i].cells[4];
+      suma += parseFloat(subtotal.textContent) || 0;
+
+    }
+    var total = document.getElementById('etable').getElementsByTagName('tfoot')[0].rows;
+    total[0].cells[1].textContent = suma.toFixed(2);
+    getDetail();
+  }
+
+  function calSale(){
+    var filas = document.getElementById('etable').getElementsByTagName('tbody')[0].rows;
+    for (var i = 0; i < filas.length; i++){
+      var inputs = filas[i].getElementsByTagName('input');
+      console.log(inputs);
+      var suma = 1;
+      for (var j = 0; j < inputs.length; j++){
+        suma *= parseFloat(inputs[j].value);
+      }
+      var subtotal = filas[i].cells[4];
+      subtotal.textContent = suma.toFixed(2);
+    }
+    calTotal();
+    
+  }
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+  
+  const uuid = generateUUID();
+  console.log(uuid);
+  
+    function createInput(description){
+      const container = document.createElement('div');
+      container.classList.add(
+        'mdl-textfield', 'mdl-js-textfield', 
+        'mdl-textfield--floating-label', 
+        'is-upgraded', 'mx-input-table'
+      );
+      
+      const id_uuid = generateUUID();
+      container.setAttribute('data-upgraded',',MaterialTextfield');
+      const input = document.createElement('input');
+      input.classList.add('mdl-textfield__input');
+      input.setAttribute('type', 'number');
+      input.setAttribute('autocomplete', 'off');
+      input.setAttribute('id', 'id_text_pro'+id_uuid);
+      input.setAttribute('name', 'name_pro');
+      input.value = description;
+      input.addEventListener('input', function() {
+        calSale();
+      });
+      container.appendChild(input);
+      /*const label = document.createElement('label');
+      label.classList.add('mdl-textfield__label');
+      label.setAttribute('for', 'id_text_pro'+id_uuid);
+      label.textContent = 'Product';
+      container.appendChild(label);*/
+      return container
+    }
+  let contador = 1;
+
+        // Función para agregar una nueva fila
+        function addProduct(np, ip) {
+            const descripcion = np
+            
+            // Verificar si la descripción no está vacía
+            if (descripcion !== '') {
+                const tabla = document.getElementById('etable').getElementsByTagName('tbody')[0];
+
+                // Crear una nueva fila
+                const nuevaFila = tabla.insertRow();
+
+                // Crear las celdas de la fila
+                const celdaNro = nuevaFila.insertCell(0);
+                celdaNro.setAttribute('data-id', ip);
+                const celdaDescripcion = nuevaFila.insertCell(1);
+                const celdaCant = nuevaFila.insertCell(2);
+                const celdaPUnit = nuevaFila.insertCell(3);
+                const celdaSTotal = nuevaFila.insertCell(4);
+                const celdaAcciones = nuevaFila.insertCell(5);
+
+                // Asignar el número y la descripción
+                celdaNro.textContent = contador;
+                // const inputDescripcion = createInput(descripcion)
+                //celdaDescripcion.appendChild(inputDescripcion);
+                celdaDescripcion.textContent = descripcion
+                const inputCant = createInput(1)
+                celdaCant.appendChild(inputCant)
+                const inputPUnit = createInput(1)
+                celdaPUnit.appendChild(inputPUnit)
+                celdaSTotal.textContent = 1
+
+
+                // Agregar un botón para eliminar la fila
+                const botonEliminar = document.createElement('button');
+                botonEliminar.textContent = 'Delete';
+                botonEliminar.onclick = function() {
+                    eliminarFila(nuevaFila);
+                };
+                celdaAcciones.appendChild(botonEliminar);
+
+                // Incrementar el contador para la siguiente fila
+                contador++;
+
+                // Limpiar el campo de entrada
+                document.getElementById('description').value = '';
+                calTotal();
+            } else {
+                alert('Por favor, ingrese una descripción.');
+            }
+        }
+
+        // Función para eliminar una fila
+        function eliminarFila(fila) {
+            const tabla = document.getElementById('etable').getElementsByTagName('tbody')[0];
+            tabla.deleteRow(fila.rowIndex - 1); // Eliminar la fila del cuerpo de la tabla
+            actualizarNumeracion(); // Actualizar los números de las filas
+            calTotal();
+        }
+
+        // Función para actualizar la numeración de las filas
+        function actualizarNumeracion() {
+            const filas = document.getElementById('etable').getElementsByTagName('tbody')[0].rows;
+            for (let i = 0; i < filas.length; i++) {
+                filas[i].cells[0].textContent = i + 1; // Actualizar el número de la fila
+            }
+            contador = filas.length + 1; // Actualizar el contador global
+        }
+
+  // Selection
+
+  function loadSelect(){
+    const url = new URL(window.location.href);
+    let param = url.searchParams.get('type_voucher');
+    if (param === null){
+      param = '1'
+    }
+    const form = document.getElementById('type_voucher-form');
+    const obj =form.querySelector('ul');
+    const elementosFiltrados = Array.from(obj.children).filter(li => li.getAttribute('data-val') === param);
+    elementosFiltrados[0].setAttribute('data-selected', 'true');
+  }
+  loadSelect()
+
+  
+  function typeProSubmit(obj){
+    const inputHidden = document.getElementById('hidden_type_voucher');
+    const form = document.getElementById('type_voucher-form');
+    const url = new URL(window.location.href);
+    const param = url.searchParams.get('type_voucher');
+    form.submit()
+  }
+
+
+  // AUTOCOMPLETE
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('description');
+
+    input.addEventListener('input', function() {
+      const query = input.value;
+
+      // Solo realizar la búsqueda si el término tiene al menos 2 caracteres
+      if (query.length >= 4) {
+        fetch(`/sale-product/?query=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            // Mostrar los resultados de la búsqueda
+            // Limpiar cualquier sugerencia previa
+            closeSuggestions();
+
+            if (data.length > 0) {
+              const suggestionList = document.createElement('ul');
+              suggestionList.classList.add('floating-list');
+              //suggestionList.classList.add('mdl-menu', 'mdl-menu--bottom-left', 'mdl-js-menu');
+              suggestionList.style.display = 'block';
+              suggestionList.setAttribute('data-upgraded', ',MaterialMenu,MaterialRipple')
+              data.forEach(item => {
+                const suggestionItem = document.createElement('li');
+                suggestionItem.textContent = item.name;
+                suggestionItem.addEventListener('click', function() {
+                  input.value = item.name;
+                  addProduct(item.name, item.id)
+                  closeSuggestions();
+                });
+                suggestionList.appendChild(suggestionItem);
+              });
+
+              input.parentElement.appendChild(suggestionList);
+            }
+          })
+          .catch(error => console.error('Error fetching autocomplete data:', error));
+      } else {
+        closeSuggestions();
+      }
+    });
+
+    // Función para cerrar las sugerencias
+    function closeSuggestions() {
+      const suggestionList = input.parentElement.querySelector('ul');
+      if (suggestionList) {
+        setTimeout(() => {
+          suggestionList.style.display = 'none';
+        }, 200);
+        suggestionList.remove();
+      }
+    }
+  });
+  
+
+</script>
+{% endblock %}

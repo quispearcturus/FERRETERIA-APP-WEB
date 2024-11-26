@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/material-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/waves.css' %}">
+    <link rel="stylesheet" href="{% static 'css/material.css' %}">
+    <link rel="stylesheet" href="{% static 'css/log.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inputs.css' %}">
+</head>
+
+<body>
+    <div class="mx-log">
+        <div class="mx-log-icon boxes float-box">
+            <i class="material-icons">assignment_ind</i>
+        </div>
+        <div class="mx-log-title">
+            <h3>Login Armfy</h3>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mx-log-content">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="id_username" name="username" autofocus>
+                    <label class="mdl-textfield__label" for="id_username">UserName</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input mx-password" type="password" id="password" name="password">
+                    <label class="mdl-textfield__label" for="password">Password</label>
+                </div>
+            </div>
+            <div class="mx-log-actions">
+                <button class="mdl-button mdl-js-button mx-button-primary waves-effect waves-light" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/waves.js' %}"></script>
+    <script src="{% static 'js/material.js' %}"></script>
+    <script src="{% static 'js/mode.js' %}"></script>
+</body>
+
+</html>

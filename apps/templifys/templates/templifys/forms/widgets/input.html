@@ -1,0 +1,4 @@
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "templifys/forms/widgets/attrs.html" %}>
+    <label class="mdl-textfield__label" for="{{ widget.attrs.id }}">{{ widget.label }}</label>
+</div>

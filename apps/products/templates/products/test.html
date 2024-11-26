@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Grahp{% endblock %}
+
+{% block style %}
+<style>
+    
+</style>
+{% endblock %}
+{% block barname %}Dash{% endblock %}
+{% block content %}
+
+<div class="mdl-cell mdl-cell--3-col">
+    {{ obj_stock }}
+</div>
+<div class="mdl-cell mdl-cell--3-col">
+    {{ obj_sale }}
+</div>
+<div class="mdl-cell mdl-cell--3-col">
+    {{ obj_cash }}
+</div>
+<div class="mdl-cell mdl-cell--3-col">
+    {{ obj_branch }}
+</div>
+
+<div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--12-col mdl-grid">
+</div>
+
+{% comment %} <div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--3-col">
+    <div id="chart2"></div>
+</div>
+<div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--3-col">
+    <div id="chart3"></div>
+</div> {% endcomment %}
+
+
+<div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--3-col">
+    <div id="chart4" data-load='{{ data|safe }}' data-motion="true"></div>
+</div>
+<div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--3-col">
+    <div id="chart6" data-load='{{ steel|safe }}' data-motion="true"></div>
+</div>
+
+<div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--3-col">
+    <div id="chart7" data-load='{{ sales|safe }}' data-motion="true"></div>
+</div>
+<div class="mx-card mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--3-col">
+
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    {% comment %} createChart('#chart'); {% endcomment %}
+    createChart('#chart4');
+    createChart('#chart6');
+    createChart('#chart7');
+</script>
+{% endblock %}

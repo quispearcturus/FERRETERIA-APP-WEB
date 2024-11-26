@@ -1,0 +1,8 @@
+{{ author }}
+from django.urls import path, include
+
+app_name = '{{ app_name }}'
+
+urlpatterns = [
+    # path('example/', ExampleView.as_view(), name='example'),
+]

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autocomplete Dinámico</title>
+  <style>
+    /* Estilos básicos */
+    .autocomplete-container {
+      position: relative;
+      width: 300px;
+      margin: 20px auto;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .autocomplete-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+    }
+
+    .autocomplete-item {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .autocomplete-item:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Input de Autocomplete con data-auto -->
+  <div class="autocomplete-container">
+    <label for="item-input">Buscar producto:</label>
+    <input type="text" id="item-input" placeholder="Escribe un producto..." data-auto='[{"item":"pan","value":"1"},{"item":"leche","value":"2"},{"item":"huevos","value":"3"},{"item":"tomate","value":"1"},{"item":"queso","value":"4"},{"item":"mantequilla","value":"2"}]' data-inp="">
+    <div class="autocomplete-suggestions"></div>
+  </div>
+
+
+
+  <div class="autocomplete-container">
+    <label for="item-inputf">Buscar productodddd:</label>
+    <input type="text" id="item-inputf" placeholder="Escribe un producto..." data-auto='[{"item":"sun","value":"1"},{"item":"mon","value":"2"}]' data-inp="">
+    <div class="autocomplete-suggestions"></div>
+  </div>
+  <script>
+    // Función que inicializa el autocomplete para el input
+    function initAutocomplete(inputElement) {
+      const data = JSON.parse(inputElement.getAttribute('data-auto'));  // Obtener los productos del atributo data-auto
+      const suggestionsContainer = inputElement.nextElementSibling;  // El contenedor de sugerencias está justo después del input
+      let selectedProduct = null;  // Variable para almacenar el producto seleccionado
+
+      // Función para filtrar las sugerencias basadas en el texto escrito
+      function showSuggestions() {
+        const query = inputElement.value.toLowerCase();
+        suggestionsContainer.innerHTML = '';  // Limpiar sugerencias anteriores
+
+        if (query) {
+          const filteredProducts = data.filter(product => 
+            product.item.toLowerCase().includes(query)
+          );
+
+          filteredProducts.forEach(product => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.classList.add('autocomplete-item');
+            suggestionItem.textContent = product.item;
+            suggestionItem.onclick = () => selectProduct(product);
+            suggestionsContainer.appendChild(suggestionItem);
+          });
+        }
+      }
+
+      // Función para manejar la selección de un producto
+      function selectProduct(product) {
+        inputElement.value = product.item;  // Solo mostrar el nombre del producto en el input
+        inputElement.setAttribute('data-inp', product.value);  // Guardar el valor (string) en el atributo data-inp
+        selectedProduct = product;  // Guardar el producto seleccionado
+        suggestionsContainer.innerHTML = '';  // Limpiar las sugerencias
+      }
+
+      // Event listener para mostrar las sugerencias mientras el usuario escribe
+      inputElement.addEventListener('input', showSuggestions);
+
+      // Opcional: Cerrar las sugerencias si el usuario hace clic fuera del input
+      document.addEventListener('click', (event) => {
+        if (!event.target.closest('.autocomplete-container')) {
+          suggestionsContainer.innerHTML = '';  // Cerrar sugerencias
+        }
+      });
+
+      // Mantener el valor en data-inp incluso si se pierde el foco
+      inputElement.addEventListener('blur', () => {
+        if (selectedProduct) {
+          inputElement.setAttribute('data-inp', selectedProduct.value);  // Mantener el valor seleccionado en el atributo
+        }
+      });
+    }
+
+    // Inicializar todos los campos de autocomplete que tengan el atributo `data-auto`
+    document.querySelectorAll('[data-auto]').forEach(inputElement => {
+      initAutocomplete(inputElement);
+    });
+  </script>
+
+</body>
+</html>

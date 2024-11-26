@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Armfy{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/material-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/waves.css' %}">
+    <link rel="stylesheet" href="{% static 'css/material.css' %}">
+    <link rel="stylesheet" href="{% static 'css/select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/c3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/micromodal.css' %}">
+    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.css" /> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/mode.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inputs.css' %}">
+    {% block style %}{% endblock %}
+</head>
+
+<body>
+    <div class="mx-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+        <header class="mx-header mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- <div aria-expanded="true" role="button" class="mdl-layout__drawer-button"><i class="material-icons">home</i></div> -->
+                <span class="mdl-layout-title">
+                    {% block barname %}Armfy{% endblock %}
+                </span>
+                <div class="mdl-layout-spacer"></div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" id="search">
+                        <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    </div>
+                </div>
+                <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+                    <li class="mdl-menu__item" id="admin-link" data-url="{% url 'admin:index' %}">Django Admin</li>
+                    <!-- <li class="mdl-menu__item">Contact</li>
+                  <li class="mdl-menu__item">Legal information</li> -->
+                </ul>
+            </div>
+        </header>
+        {% include 'menu.html' %}
+        <main class="mdl-layout__content mx-main">
+            <div class="mdl-grid mx-content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/waves.js' %}"></script>
+    <script src="{% static 'js/material.js' %}"></script>
+    <script src="{% static 'js/select.js' %}"></script>
+    <script src="{% static 'js/d3.v5.min.js' %}"></script>
+    <script src="{% static 'js/c3.min.js' %}"></script>
+    {% comment %} <script src="{% static 'js/micromodal.min.js' %}"></script> {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+    <script src="{% static 'js/mode.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    {% block script %}{% endblock %}
+    <script>
+        redirectUrl('admin-link');
+        redirectUrl('logout');
+        redirectUrl('change_password');
+        MicroModal.init();
+    </script>
+</body>
+
+</html>

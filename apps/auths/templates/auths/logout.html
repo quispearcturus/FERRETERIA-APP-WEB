@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <link rel="stylesheet" href="{% static 'css/material-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/waves.css' %}">
+    <link rel="stylesheet" href="{% static 'css/material.css' %}">
+    <link rel="stylesheet" href="{% static 'css/log.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inputs.css' %}">
+</head>
+
+<body>
+    <div class="mx-log">
+        <div class="mx-log-icon boxes float-box">
+            <i class="material-icons">help_outline</i>
+        </div>
+        <div class="mx-log-title">
+            <h3>Logout Armfy</h3>
+        </div>
+        <div class="mx-log-content">
+            <span class="mx-log-text">
+                Esta seguro que desea salir de Armfy
+            </span>
+        </div>
+        <div class="mx-log-actions mx-log-order">
+            <a href="/">
+                <button type="button"
+                    class="mdl-button mdl-js-button mx-button-accent waves-effect waves-light">Cancel</button>
+            </a>
+            <form method="post" action="{% url 'auths:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="mdl-button mdl-js-button mx-button-primary waves-effect waves-light">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'js/waves.js' %}"></script>
+    <script src="{% static 'js/material.js' %}"></script>
+    <script src="{% static 'js/mode.js' %}"></script>
+</body>
+
+</html>

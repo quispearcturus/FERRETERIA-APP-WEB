@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <link href="node_modules/material-symbols/index.css" rel="stylesheet">
+  <script type="importmap">
+          {
+            "imports": {
+              "@material/web/": "https://esm.run/@material/web/"
+            }
+          }
+  </script>
+  <script type="module" src="js/material_web.js"></script>
+</head>
+
+<body>
+
+  <md-outlined-text-field placeholder="Search for messages">
+    <md-icon slot="leading-icon">search</md-icon>
+  </md-outlined-text-field>
+  
+  <md-outlined-text-field label="Password" type="password">
+    <md-icon-button toggle slot="trailing-icon">
+      <md-icon>visibility</md-icon>
+      <md-icon slot="selected">visibility_off</md-icon>
+    </md-icon-button>
+  </md-outlined-text-field>
+  
+  <md-outlined-text-field
+      label="Username"
+      error
+      error-text="Username not available">
+    <md-icon slot="trailing-icon">error</md-icon>
+  </md-outlined-text-field>
+
+</body>
+
+</html>

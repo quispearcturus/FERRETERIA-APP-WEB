@@ -1,0 +1,21 @@
+{% load getfield %}
+<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+  <thead>
+    <tr>
+      {% for head in heads %}
+      <th>{{ head }}</th>
+      {% endfor %}
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for obj in object_list %}
+    <tr>
+      {% for field in fields %}
+      <td>{{ obj|getfield:field}}</td>
+      {% endfor %}
+      <td><button onclick="location.href='{% url 'sales:sale_pdf' obj.id %}'">pdf</button></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

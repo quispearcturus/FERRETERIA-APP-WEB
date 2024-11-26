@@ -1,0 +1,7 @@
+{% comment %} <form method="post">
+    {% csrf_token %}
+    {{ obj_form.as_p }}
+
+    <button type="submit">{% if is_editing %}Actualizar{% else %}Crear{% endif %}</button>
+  </form>
+  <a href="{% url 'products:product_list' %}">Volver a la lista</a> {% endcomment %}

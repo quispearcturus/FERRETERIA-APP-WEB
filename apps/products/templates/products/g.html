@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Required con Material Lite</title>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <style>
+        .error {
+            border-bottom: 1px solid red; /* Estilo de error */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="sample3" required>
+        <label class="mdl-textfield__label" for="sample3">UserName</label>
+    </div>
+
+    <script>
+        const input = document.getElementById('sample3');
+
+        // Asegúrate de que no esté en rojo al cargar
+        input.classList.remove('error');
+
+        input.addEventListener('focus', () => {
+            input.classList.remove('error'); // Elimina el estilo de error al enfocar
+        });
+
+        input.addEventListener('blur', () => {
+            if (!input.value) {
+                input.classList.add('error'); // Agrega el estilo de error si está vacío
+            }
+        });
+    </script>
+
+</body>
+</html>

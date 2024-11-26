@@ -1,0 +1,15 @@
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+    <input type="text" value="" class="mdl-textfield__input" readonly {% include "django/forms/widgets/attrs.html" %} />
+    <input type="hidden" value="" name="{{ widget.name }}" id="{{ widget.name }}">
+    <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+    <label for="{{ widget.attrs.id }}" class="mdl-textfield__label">{{ widget.label }}</label>
+    <ul for="{{ widget.attrs.id }}" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+        {% for group_name, group_choices, group_index in widget.optgroups %}{% if group_name %}
+        <optgroup label="{{ group_name }}">{% endif %}
+            {% for option in group_choices %}
+            {% include option.template_name with widget=option %}
+            {% endfor %}{% if group_name %}
+        </optgroup>{% endif %}
+        {% endfor %}
+    </ul>
+</div>

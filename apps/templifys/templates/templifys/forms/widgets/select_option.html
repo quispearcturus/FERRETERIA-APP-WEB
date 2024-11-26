@@ -1,0 +1,2 @@
+{% comment %} <option value="{{ widget.value|stringformat:'s' }}"{% include "django/forms/widgets/attrs.html" %}>{{ widget.label }}</option> {% endcomment %}
+<li class="mdl-menu__item" data-val="{{ widget.value|stringformat:'s' }}" {% include "django/forms/widgets/attrs.html" %}>{{ widget.label }}</li>

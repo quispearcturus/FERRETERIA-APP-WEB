@@ -1,0 +1,25 @@
+<div class="mx-scoreboard mdl-shadow--4dp" style="background-color: {{ widget.color }};">
+    <div class="mdl-grid mx-scoreboard-head">
+        <div class="mdl-cell mdl-cell--4-col cci">
+            <div class="mx-scoreboard-float-right">
+                <button class="mdl-button mdl-js-button mdl-button--icon waves-effect waves-light" id="{{widget.id}}">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                    data-mdl-for="{{widget.id}}">
+                    <li class="mdl-menu__item">Some Action</li>
+                    <li class="mdl-menu__item">Another Action</li>
+                    <li disabled class="mdl-menu__item">Disabled Action</li>
+                    <li class="mdl-menu__item">Yet Another Action</li>
+                </ul>
+            </div>
+            <div class="mx-scoreboard-icon waves-effect waves-light">
+                <i class="material-icons">{{ widget.icon }}</i>
+            </div>
+        </div>
+        <div class="mdl-cell mdl-cell--8-col cci">
+            <div class="mx-scoreboard-name">{{ widget.name }}</div>
+        </div>
+    </div>
+    <div class="mx-scoreboard-value">{{ widget.value }}</div>
+</div>

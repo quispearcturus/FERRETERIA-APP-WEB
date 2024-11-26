@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Armfy - Sales
+{% endblock %}
+
+{% block style %}
+  <style>
+    .fab-button {
+      position: fixed;
+      bottom: 50px; /* Distancia desde el fondo */
+      right: 20px; /* Distancia desde la derecha */
+      z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    }
+  </style>
+{% endblock %}
+
+{% block barname %}
+  Sales
+{% endblock %}
+{% block content %}
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored fab-button waves-effect waves-light" onclick="location.href='{% url 'sales:sale_create' %}'">
+  <i class="material-icons">add</i>
+</button>
+<div class="mx-card mdl-shadow--4dp mdl-cell mdl-cell--12-col mdl-grid">
+{{ obj_table }}
+</div>
+{% endblock %}
+
+{% block script %}
+  <script>
+  </script>
+{% endblock %}
